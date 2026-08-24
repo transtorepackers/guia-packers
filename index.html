@@ -579,7 +579,25 @@ function showStep(n) {
   }, 50);
 }
 
+const CUECA_URLS = {
+  transt_comfort:     'https://i.postimg.cc/k26Zp9rs/10.jpg',
+  essential:          'https://i.postimg.cc/yDg5bBqv/11.jpg',
+  style:              'https://i.postimg.cc/QF9PysLS/12.jpg',
+  slip_fit:           'https://i.postimg.cc/gxX5Td9M/13.jpg',
+  absorvente:         'https://i.postimg.cc/sMQ8NyFL/14.jpg',
+  bolso_frontal:      'https://i.postimg.cc/21sJpJmG/15.jpg',
+  slip_side:          'https://i.postimg.cc/872383Dw/16.jpg',
+  king:               'https://i.postimg.cc/pmw7N7x0/17.jpg',
+  com_volume:         'https://i.postimg.cc/WdBKRKjy/18.jpg',
+  sunga:              'https://i.postimg.cc/CR3tytYt/19.jpg',
+  boxer_side:         'https://i.postimg.cc/k20ZrZ9L/20.jpg',
+  transt_performance: 'https://i.postimg.cc/k26Zp9rs/10.jpg',
+};
+
 function imgEl(key) {
+  // Checar primeiro se é URL de cueca externa
+  if (CUECA_URLS[key]) return '<img src="' + CUECA_URLS[key] + '" alt="" style="width:100%;height:100%;object-fit:cover;">';
+  // Senão buscar no base64
   const k = 'acc_' + key;
   if (!IMG[k]) return '';
   return '<img src="' + IMG[k] + '" alt="">';
@@ -652,27 +670,37 @@ function showResult() {
   pl.appendChild(grid);
 
   // Acessórios
+  // Cueca King — para packers grandes (Bmonster e KingSex)
+  const CUECA_KING = { name:'Cueca com Botão King', desc:'Abertura frontal ampliada com botão, desenvolvida para packers maiores que 16cm. Acomoda o packer de diferentes formas com segurança.', url:'https://www.transtore.com.br/produtos/cueca-com-botao-king-preta/', img:'king' };
+
+  // Verificar se algum packer filtrado é Bmonster ou KingSex
+  const temPackerGrande = filtered.some(p => p.id === 'Bmonster' || p.id === 'Kingsex');
+  // KingSex: mostrar SOMENTE a cueca King
+  const temKingSex = filtered.some(p => p.id === 'Kingsex') && filtered.length === 1;
+
   const ACESSORIOS = {
     volume: [
-      { name:'Cueca com Bolsinho', desc:'Bolsinho interno que segura o packer sem cinta. Ideal para volume no dia a dia.', url:'https://www.transtore.com.br/cuecas/cueca-com-bolsinho/', img:'Cueca_Bolsinho' },
-      { name:'Cueca TransT', desc:'Versátil para volume, urinar e sexo. Cinta interna com duas aberturas: superior para sexo e inferior para volume discreto.', url:'https://www.transtore.com.br/produtos/cueca-transt-preta/', img:'Cueca_TransT' },
-      { name:'Cueca para Packer', desc:'Muitos modelos para escolher! Para volume, urinar e relações. Tecido mais grosso para manter o volume no lugar.', url:'https://www.transtore.com.br/produtos/cueca-packer-preta/', img:'Cueca_Packer' },
+      { name:'Cueca - Bolso Frontal', desc:'Bolso frontal externo mantém o packer separado do corpo. Volume discreto sob a roupa com tecido leve e flexível.', url:'https://www.transtore.com.br/produtos/cueca-bolso-frontal/', img:'bolso_frontal' },
+      { name:'Cueca Absorvente para Packer', desc:'Desenvolvida para o período menstrual com bolso interno para o packer. Camada absorvente e externa para segurança e conforto.', url:'https://www.transtore.com.br/produtos/cueca-absorvente-para-packer/', img:'absorvente' },
+      { name:'Sunga para Packer', desc:'Para quem quer entrar na água com segurança e discrição. Bolso interno mantém o packer firme durante atividades aquáticas.', url:'https://www.transtore.com.br/produtos/sunga-para-packer-preta/', img:'sunga' },
+      { name:'Cueca para Packer Essential', desc:'Tecido encorpado e design minimalista. Maior cobertura para manter o volume discreto sob a roupa.', url:'https://www.transtore.com.br/produtos/cueca-packer-essential/', img:'essential' },
+      { name:'Cueca TransT Performance', desc:'Tecido tecnológico com toque suave, elasticidade e rápida evaporação do suor. Leve e funcional para o dia a dia.', url:'https://www.transtore.com.br/produtos/cueca-transt-comfort/', img:'transt_performance' },
     ],
     urinar: [
-      { name:'Cinta Strap', desc:'Uma cinta que não aperta o corpo! Feita com elásticos de cueca, para não marcar por baixo da roupa. Elástico inferior que segura o packer sem movimentações.', url:'https://www.transtore.com.br/produtos/cinta-strap-preta/', img:'Cinta_Strap' },
-      { name:'Cueca TransT', desc:'Versátil para volume, urinar e sexo. Cinta interna com duas aberturas para todas as funções.', url:'https://www.transtore.com.br/produtos/cueca-transt-preta/', img:'Cueca_TransT' },
-      { name:'Cueca para Packer', desc:'Muitos modelos para escolher! Para volume, urinar e relações. Tecido mais grosso para manter o volume no lugar.', url:'https://www.transtore.com.br/produtos/cueca-packer-preta/', img:'Cueca_Packer' },
+      { name:'Cueca TransT Comfort', desc:'Maciez, leveza e conforto em algodão. Cinta interna com duas alturas de posicionamento para urinar e uso diário.', url:'https://www.transtore.com.br/produtos/cueca-transt-comfort/', img:'transt_comfort' },
+      { name:'Cueca TransT Performance', desc:'Tecido tecnológico com rápida evaporação do suor. Ideal para a rotina diária, esportes e urinar com segurança.', url:'https://www.transtore.com.br/produtos/cueca-transt-comfort/', img:'transt_performance' },
+      { name:'Cueca Side Boxer', desc:'Abertura lateral permite posicionar o packer para urinar sem precisar retirá-lo. Prático para o uso diário.', url:'https://www.transtore.com.br/produtos/cueca-boxer-abert-lateral-preta/', img:'boxer_side' },
+      { name:'Cueca Side Slip', desc:'Formato slip clássico com abertura lateral para urinar sem retirar o packer. Discreta e prática.', url:'https://www.transtore.com.br/produtos/cueca-slip-abert-lateral-preta/', img:'slip_side' },
     ],
     sexo: [
-      { name:'Cinta Reforçada', desc:'A mais indicada para penetração. Estrutura firme que mantém o packer estável durante o uso.', url:'https://www.transtore.com.br/produtos/cinta-reforcada-preta/', img:'Cinta_reforcada' },
-      { name:'Cinta NiceT', desc:'Para elevar o prazer visual! Deixa o packer mais aparente. Parte inferior vazada trazendo maior visão ao packer.', url:'https://www.transtore.com.br/produtos/cinta-nicet-preta/', img:'Cinta_NiceT' },
-      { name:'Cinta Boxer', desc:'Em formato de cueca com duas aberturas: uma para o comprimento e outra para a "bola". Cobre traseira e coxas para mais discrição.', url:'https://www.transtore.com.br/produtos/cinta-boxer-preta/', img:'Cinta_Boxer' },
-      { name:'Cueca TransT', desc:'Versátil para o sexo. Abertura superior que posiciona o packer para facilitar a penetração.', url:'https://www.transtore.com.br/produtos/cueca-transt-preta/', img:'Cueca_TransT' },
+      { name:'Cueca TransT Comfort', desc:'Maciez e conforto em algodão. Cinta interna com abertura superior para posicionar o packer durante as relações.', url:'https://www.transtore.com.br/produtos/cueca-transt-comfort/', img:'transt_comfort' },
+      { name:'Cueca para Packer Essential', desc:'Construção reforçada e design minimalista. Mantém o packer firme e seguro durante as relações sexuais.', url:'https://www.transtore.com.br/produtos/cueca-packer-essential/', img:'essential' },
+      { name:'Cueca para Packer Style', desc:'Mais estrutura, segurança e estilo. Elástico trabalhado, costuras laterais e acabamento reforçado nas pernas.', url:'https://www.transtore.com.br/produtos/cueca-packer-style/', img:'style' },
     ],
     all: [
-      { name:'Cueca TransT', desc:'Versátil para volume, urinar e sexo. Cinta interna com duas aberturas para todas as funções.', url:'https://www.transtore.com.br/produtos/cueca-transt-preta/', img:'Cueca_TransT' },
-      { name:'Cinta Strap', desc:'Uma cinta que não aperta! Feita com elásticos de cueca. Essencial para usar o packer STP em pé com segurança.', url:'https://www.transtore.com.br/produtos/cinta-strap-preta/', img:'Cinta_Strap' },
-      { name:'Cueca para Packer', desc:'Muitos modelos para escolher! Para volume, urinar e relações.', url:'https://www.transtore.com.br/produtos/cueca-packer-preta/', img:'Cueca_Packer' },
+      { name:'Cueca TransT Comfort', desc:'A mais versátil: maciez em algodão, cinta interna com duas alturas para volume, urinar e relações sexuais.', url:'https://www.transtore.com.br/produtos/cueca-transt-comfort/', img:'transt_comfort' },
+      { name:'Cueca TransT Performance', desc:'Tecido tecnológico leve, para quem usa o packer em todas as funções com mais liberdade de movimento.', url:'https://www.transtore.com.br/produtos/cueca-transt-comfort/', img:'transt_performance' },
+      { name:'Cueca para Packer Style', desc:'Mais estrutura e segurança para todas as funções. Acabamento reforçado e elástico trabalhado para maior estabilidade.', url:'https://www.transtore.com.br/produtos/cueca-packer-style/', img:'style' },
     ],
   };
   const HIGIENE = [
@@ -698,7 +726,18 @@ function showResult() {
 
   const al = document.getElementById('acessorioList');
   al.innerHTML = '';
-  [...(ACESSORIOS[obj]||[])].forEach(a => {
+
+  // Lógica especial: KingSex sozinho → só Cueca King
+  // Bmonster presente → adicionar Cueca King à lista normal
+  let accsParaMostrar;
+  if (temKingSex) {
+    accsParaMostrar = [CUECA_KING];
+  } else {
+    accsParaMostrar = [...(ACESSORIOS[obj]||[])];
+    if (temPackerGrande) accsParaMostrar.push(CUECA_KING);
+  }
+
+  accsParaMostrar.forEach(a => {
     al.innerHTML += '<div class="product-card"><div class="product-img">' + imgEl(a.img) + '</div><div class="product-info"><div class="product-name">' + a.name + '</div><div class="product-desc">' + a.desc + '</div></div><a class="product-link" href="' + a.url + '" target="_blank">Ver</a></div>';
   });
   HIGIENE.forEach(h => {
